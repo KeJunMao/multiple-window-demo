@@ -40,12 +40,7 @@ watch(data, () => {
 });
 
 watch([x, y], () => {
-  console.log("gogo");
   post({ id, x: x.value, y: y.value, type: "set" });
-});
-
-onUnmounted(() => {
-  post({ id, type: "delete" });
 });
 
 addEventListener("unload", () => {
