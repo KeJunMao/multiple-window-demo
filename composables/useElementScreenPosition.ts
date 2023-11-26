@@ -8,6 +8,9 @@ export function useElementScreenPosition(target: any) {
     return targetY.value + screenY.value
   })
 
+  const offsetX = computed(()=> screenX.value - targetX.value)
+  const offsetY = computed(()=> screenY.value - targetY.value)
+
   function update() {
     targetUpdate()
   }
@@ -15,6 +18,12 @@ export function useElementScreenPosition(target: any) {
   return {
     x,
     y,
+    targetX,
+    targetY,
+    offsetX,
+    offsetY,
+    screenX,
+screenY,
     update
   }
 }

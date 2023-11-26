@@ -5,7 +5,7 @@ const balls = ref<Record<string, any>>({});
 const id = Date.now();
 
 const { style, isDragging } = useDraggable(ball);
-const { x, y, update } = useElementScreenPosition(ball);
+const { x, y, screenX, screenY, update } = useElementScreenPosition(ball);
 useRafFn(() => isDragging.value && update());
 
 const lines = computed(() => {
@@ -26,7 +26,12 @@ const broadcastHandle = {
   set({ id: _id, ...data }: any) {
     if (id === _id) return;
     balls.value[_id] = data;
-    post({ id, x: x.value, y: y.value, type: "set" });
+    post({
+      id,
+      x: x.value,
+      y: y.value,
+      type: "set"
+    });
   },
   delete({ id }: any) {
     delete balls.value[id];
@@ -50,6 +55,14 @@ addEventListener("unload", () => {
 
 <template>
   <div class="h-100vh w-100vw">
+    <div
+        v-for="item in balls"
+        class="absolute w-40 bg-red-50 h-40 select-none rounded-full border border-red border-solid flex items-center justify-center"
+        :style="{
+          left: `${item.x - screenX}px`,
+          top: `${item.y - screenY}px`
+        }"
+      >{{ x }},{{ y }}</div>
     <div
       :style="style"
       ref="ball"
